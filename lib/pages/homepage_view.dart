@@ -13,12 +13,12 @@ class HomePageView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Mabelin MakeUp"),
+        title: Text("League Teams"),
         centerTitle: true,
         actions: [
           IconButton(
             onPressed: () {
-              Get.to(FavoritePageView())
+              Get.to(() => FavoritePageView())
                   ?.then((value) => controller.checkFavorite());
             },
             icon: Icon(Icons.favorite_outline),
@@ -31,7 +31,7 @@ class HomePageView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "MakeUp",
+              "Teams in English Premier League",
               style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -46,9 +46,9 @@ class HomePageView extends StatelessWidget {
               } else {
                 return Expanded(
                   child: ListView.builder(
-                    itemCount: controller.makeup.length,
+                    itemCount: controller.sport.length,
                     itemBuilder: (context, index) {
-                      MakeupModel team = controller.makeup[index];
+                      SportModel team = controller.sport[index];
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Card(
@@ -71,7 +71,7 @@ class HomePageView extends StatelessWidget {
                                 ),
                               ),
                               trailing: Obx(() {
-                                bool   isFavorite =
+                                bool isFavorite =
                                     controller.isFavoriteList[index].value;
                                 return IconButton(
                                   icon: isFavorite == false
@@ -82,9 +82,14 @@ class HomePageView extends StatelessWidget {
                                         ),
                                   onPressed: () {
                                     if (isFavorite == false) {
-                                      controller.addToFavorite(team);
+                                      controller.addToFavorite(
+                                          idTeams: team.idTeam! as int,
+                                          strTeams: team.strTeam!,
+                                          strLeague: team.strLeague!,
+                                          image_link: team.strTeamBadge!);
                                     } else {
-                                      controller.deleteFromFavorite(team.idTeam! as int);
+                                      controller.deleteFromFavorite(
+                                          team.idTeam! as int);
                                     }
                                     controller.isFavoriteList[index].toggle();
                                   },

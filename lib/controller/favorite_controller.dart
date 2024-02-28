@@ -3,10 +3,9 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:sqlfletwshislistfatih/models/sport_model.dart';
 
 class FavoritePageController extends GetxController {
-  RxList<MakeupModel> makeups = RxList<MakeupModel>();
+  RxList<dynamic> sport = RxList<dynamic>();
 
   var isLoading = false.obs;
 
@@ -14,10 +13,12 @@ class FavoritePageController extends GetxController {
     isLoading.value = true;
     Database? database;
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + "db_makeup";
+    String path = directory.path + "db_sport";
     database = await openDatabase(path);
-    final data = await database.query("makeup");
-    makeups.value = data.map((e) => MakeupModel.fromJson(e)).toList();
+    final data = await database.query("sport");
+    for (var item in data) {
+      sport.value.add(item);
+    }
     isLoading.value = false;
   }
 
@@ -25,10 +26,10 @@ class FavoritePageController extends GetxController {
     try {
       Database? database;
       Directory directory = await getApplicationDocumentsDirectory();
-      String path = directory.path + "db_makeup";
+      String path = directory.path + "db_sport";
       database = await openDatabase(path);
-      await database.delete("makeup", where: "id = ?", whereArgs: [id]);
-      makeups.removeAt(index);
+      await database.delete("sport", where: "idteam = ?", whereArgs: [id]);
+      sport.removeAt(index);
     } catch (e) {
       print("Error deleting from favorite: $e");
     }

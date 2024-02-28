@@ -23,9 +23,8 @@ class FavoritePageView extends StatelessWidget {
           );
         } else {
           return ListView.builder(
-            itemCount: controller.makeups.length,
+            itemCount: controller.sport.length,
             itemBuilder: (context, index) {
-              MakeupModel? makeup = controller.makeups[index];
               return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Card(
@@ -36,18 +35,18 @@ class FavoritePageView extends StatelessWidget {
                     child: ListTile(
                       contentPadding: EdgeInsets.all(8),
                       title: Text(
-                        'Name: ${makeup.strTeam ?? ''}',
+                        'Name: ${controller.sport[index]["strTeam"] ?? ''}',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       subtitle: Text(
-                        'Brand: ${makeup.strLeague ?? ''}',
+                        'League: ${controller.sport[index]["strLeague"] ?? ''}',
                       ),
                       leading: ClipRRect(
                         borderRadius: BorderRadius.circular(8),
                         child: Image.network(
-                          makeup.strTeamBadge?? '',
+                         controller.sport[index]["image_link"]?? '',
                           width: 60,
                           height: 60,
                           fit: BoxFit.cover,
@@ -56,7 +55,7 @@ class FavoritePageView extends StatelessWidget {
                       trailing: IconButton(
                         onPressed: () {
                           controller.deleteFromFavorite(
-                            makeup.idTeam! as int,
+                            controller.sport[index]["idTeam"]! as int,
                             index,
                           );
                         },
